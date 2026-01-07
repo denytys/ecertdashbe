@@ -13,19 +13,17 @@ class Dashboard extends CI_Controller
     // GET /dashboard/stats
     public function stats()
     {
-        $year = date('Y'); // auto tahun
+        $year = $this->input->get('year') ?? date('Y');
 
-        // === hitung total per tabel (sama kaya sebelumnya) ===
         $ecert_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_in');
         $ephyto_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_in');
         $eah_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('eah_out');
         $ephyto_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_out');
 
-        // === hitung via doc (panggil ke model) ===
         $via = $this->dashboard_model->count_via($year);
 
         $response = [
-            'year' => $year,
+            'year' => (int)$year,
             'ecert_in' => $ecert_in,
             'ephyto_in' => $ephyto_in,
             'eah_out' => $eah_out,
@@ -40,14 +38,16 @@ class Dashboard extends CI_Controller
             ->set_output(json_encode($response));
     }
 
+
     // GET /dashboard/tabledata?type=ecertin
     public function tabledata()
     {
         $type = $this->input->get('type');
+        $year = $this->input->get('year') ?? date('Y');
+
         $table = '';
         $negField = '';
         $dateField = 'tgl_cert';
-        $year = date('Y'); // auto tahun kiye bae
 
         switch ($type) {
             case 'ecertin':
@@ -74,7 +74,7 @@ class Dashboard extends CI_Controller
         $result = $this->db
             ->select("$negField AS negara, COUNT(*) AS jumlah")
             ->from($table)
-            ->where("YEAR($dateField)", $year) // filter tahun
+            ->where("YEAR($dateField)", $year)
             ->group_by($negField)
             ->order_by('jumlah', 'DESC')
             ->get()
@@ -84,6 +84,7 @@ class Dashboard extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($result));
     }
+
 
     // dashboard
     public function monthly()
