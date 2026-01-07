@@ -18,7 +18,7 @@ class Dashboard extends CI_Controller
         // === hitung total per tabel (sama kaya sebelumnya) ===
         $ecert_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_in');
         $ephyto_in = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_in');
-        $ecert_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ecert_out');
+        $eah_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('eah_out');
         $ephyto_out = $this->db->where('YEAR(tgl_cert)', $year)->count_all_results('ephyto_out');
 
         // === hitung via doc (panggil ke model) ===
@@ -28,7 +28,7 @@ class Dashboard extends CI_Controller
             'year' => $year,
             'ecert_in' => $ecert_in,
             'ephyto_in' => $ephyto_in,
-            'ecert_out' => $ecert_out,
+            'eah_out' => $eah_out,
             'ephyto_out' => $ephyto_out,
             'asw' => $via['asw'],
             'ippc' => $via['ippc'],
@@ -59,7 +59,7 @@ class Dashboard extends CI_Controller
                 $negField = 'neg_asal';
                 break;
             case 'ecertout':
-                $table = 'ecert_out';
+                $table = 'eah_out';
                 $negField = 'neg_tuju';
                 break;
             case 'ephytoout':

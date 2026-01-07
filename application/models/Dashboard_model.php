@@ -16,7 +16,7 @@ class Dashboard_model extends CI_Model
                 $dateField = 'tgl_cert';
                 break;
             case 'ecertout':
-                $table = 'ecert_out';
+                $table = 'eah_out';
                 $dateField = 'tgl_cert';
                 break;
             case 'ephytoout':
@@ -69,12 +69,12 @@ class Dashboard_model extends CI_Model
     {
         $query = $this->db
             ->select('tgl_cert, no_cert, doc_type, komoditi, neg_tuju, upt, send_to')
-            ->from('ecert_out')
+            ->from('eah_out')
             ->order_by('tgl_cert', 'DESC')
             ->get();
 
         return [
-            'total_data' => $this->db->count_all('ecert_out'),
+            'total_data' => $this->db->count_all('eah_out'),
             'data' => $query->result_array()
         ];
     }
@@ -100,9 +100,9 @@ class Dashboard_model extends CI_Model
         $h2h_in = $this->db->where("YEAR(tgl_cert)", $year)->count_all_results('ecert_in');
 
         // ecert_out → cek kolom send_to
-        $asw_out = $this->db->where("YEAR(tgl_cert)", $year)->where('send_to', 'ASW')->count_all_results('ecert_out');
-        $ippc_out = $this->db->where("YEAR(tgl_cert)", $year)->where('send_to', 'IPPC')->count_all_results('ecert_out');
-        $h2h_out = $this->db->where("YEAR(tgl_cert)", $year)->where('send_to', 'H2H')->count_all_results('ecert_out');
+        $asw_out = $this->db->where("YEAR(tgl_cert)", $year)->where('send_to', 'ASW')->count_all_results('eah_out');
+        $ippc_out = $this->db->where("YEAR(tgl_cert)", $year)->where('send_to', 'IPPC')->count_all_results('eah_out');
+        $h2h_out = $this->db->where("YEAR(tgl_cert)", $year)->where('send_to', 'H2H')->count_all_results('eah_out');
 
         // ephyto_in → cek kolom data_from
         $asw_in = $this->db->where("YEAR(tgl_cert)", $year)->where('data_from', 'ASW')->count_all_results('ephyto_in');
